@@ -8,13 +8,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: ssh command
         id: ssh
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
-          script: whoami
+        run: "ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} --password ${{ secrets.PASSWORD }} whoami"
       - run: ${{join(steps.ssh.outputs.*, '\n')}} > results.txt
       - uses: actions/upload-artifact@v1
         with:
