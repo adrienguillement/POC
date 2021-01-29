@@ -9,6 +9,8 @@ jobs:
       - name: "Prepare SSH key and known hosts"
         run: |
           mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
           ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
       - name: ssh command
         id: ssh
