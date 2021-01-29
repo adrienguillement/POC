@@ -6,19 +6,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: mkdir -p output/
-      - run: echo "This is fancy a comment" > output/results.txt
+      - name: ssh command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: whoami > results.txt
       - uses: actions/upload-artifact@v1
         with:
-          name: results
-          path: output
+          name: results.txt
       - uses: actions/download-artifact@v1
         with:
-          name: results
+          name: results.txt
       - name: comment PR
         uses: machine-learning-apps/pr-comment@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          path: results/results.txt
-
+          path: results.txt
