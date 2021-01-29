@@ -6,6 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: "Prepare SSH key and known hosts"
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
       - name: ssh command
         id: ssh
         run: "echo ${{ secrets.PASSWORD }} | ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} whoami"
